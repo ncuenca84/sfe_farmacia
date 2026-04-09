@@ -1,0 +1,3 @@
+AddHandler application/x-httpd-php83 .php
+RewriteEngine On
+RewriteRule ^(.*)$ public/$1 [L]
