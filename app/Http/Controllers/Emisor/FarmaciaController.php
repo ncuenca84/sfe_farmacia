@@ -118,9 +118,9 @@ class FarmaciaController extends Controller
     private function queryProductos($user)
     {
         if ($user->unidad_negocio_id) {
-            return Producto::where('unidad_negocio_id', $user->unidad_negocio_id);
+            return Producto::where('productos.unidad_negocio_id', $user->unidad_negocio_id);
         }
 
-        return Producto::where('emisor_id', $user->emisor_id);
+        return Producto::where('productos.emisor_id', $user->emisor_id);
     }
 }
