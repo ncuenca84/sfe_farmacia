@@ -94,4 +94,9 @@ class Producto extends Model
     {
         return $this->hasMany(Inventario::class);
     }
+
+    public function lotes(): HasMany
+    {
+        return $this->hasMany(Lote::class);
+    }
 }

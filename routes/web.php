@@ -214,6 +214,14 @@ Route::middleware(['auth', 'emisor.activo', 'role:ROLE_ADMIN,ROLE_EMISOR_ADMIN,R
             Route::resource('proveedores', Emisor\ProveedorController::class)->parameters(['proveedores' => 'proveedor'])->except(['show']);
             Route::resource('presentaciones', Emisor\PresentacionController::class)->parameters(['presentaciones' => 'presentacion'])->except(['show']);
             Route::resource('laboratorios', Emisor\LaboratorioController::class)->parameters(['laboratorios' => 'laboratorio'])->except(['show']);
+
+            // Lotes (multi-lote FEFO)
+            Route::get('/lotes', [Emisor\LoteController::class, 'index'])->name('lotes.index');
+            Route::get('/lotes/ingreso', [Emisor\LoteController::class, 'ingreso'])->name('lotes.ingreso');
+            Route::post('/lotes', [Emisor\LoteController::class, 'store'])->name('lotes.store');
+            Route::get('/lotes/{lote}/kardex', [Emisor\LoteController::class, 'kardex'])->name('lotes.kardex');
+            Route::get('/lotes/{lote}/ajuste', [Emisor\LoteController::class, 'ajuste'])->name('lotes.ajuste');
+            Route::post('/lotes/{lote}/ajuste', [Emisor\LoteController::class, 'guardarAjuste'])->name('lotes.guardar-ajuste');
         });
 
         // Inventario

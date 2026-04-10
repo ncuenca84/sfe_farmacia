@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\TipoMovimiento;
 use App\Models\Emisor;
 use App\Models\Inventario;
+use App\Models\Lote;
 use App\Models\MovimientoInventario;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -271,6 +272,40 @@ class InventarioService
 
             $inventario->stock_actual = $nuevoStock;
             $inventario->save();
+
+            // FEFO: consumir de lotes si hay lotes disponibles para este producto
+            if ($tipo === TipoMovimiento::SALIDA) {
+                $lotesDisponibles = Lote::where('producto_id', $productoId)
+                    ->where('establecimiento_id', $establecimientoId)
+                    ->where('cantidad_actual', '>', 0)
+                    ->where('activo', true)
+                    ->exists();
+
+                if ($lotesDisponibles) {
+                    app(LoteService::class)->consumirFefo(
+                        productoId: $productoId,
+                        establecimientoId: $establecimientoId,
+                        cantidad: $cantidad,
+                        descripcion: $descripcion,
+                        referencia: $referencia,
+                    );
+                }
+            } elseif ($tipo === TipoMovimiento::ENTRADA && $referencia) {
+                $lotesExisten = Lote::where('producto_id', $productoId)
+                    ->where('establecimiento_id', $establecimientoId)
+                    ->where('activo', true)
+                    ->exists();
+
+                if ($lotesExisten) {
+                    app(LoteService::class)->devolverStock(
+                        productoId: $productoId,
+                        establecimientoId: $establecimientoId,
+                        cantidad: $cantidad,
+                        descripcion: $descripcion,
+                        referencia: $referencia,
+                    );
+                }
+            }
 
             $costoTotal = $cantidad * $costoUnitario;
 
