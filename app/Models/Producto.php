@@ -48,16 +48,6 @@ class Producto extends Model
         return $this->belongsTo(Laboratorio::class);
     }
 
-    public function requiereReceta(): bool
-    {
-        return in_array($this->tipo_venta, ['requiere_receta', 'controlado']);
-    }
-
-    public function esControlado(): bool
-    {
-        return $this->tipo_venta === 'controlado';
-    }
-
     public function estaVencido(): bool
     {
         return $this->fecha_vencimiento && $this->fecha_vencimiento->isPast();
@@ -68,6 +58,16 @@ class Producto extends Model
         return $this->fecha_vencimiento
             && !$this->estaVencido()
             && $this->fecha_vencimiento->lte(now()->addDays($dias));
+    }
+
+    public function requiereReceta(): bool
+    {
+        return in_array($this->tipo_venta, ['requiere_receta', 'controlado']);
+    }
+
+    public function esControlado(): bool
+    {
+        return $this->tipo_venta === 'controlado';
     }
 
     public function emisor(): BelongsTo

@@ -273,7 +273,7 @@ class InventarioService
             $inventario->stock_actual = $nuevoStock;
             $inventario->save();
 
-            // FEFO: consumir de lotes si hay lotes disponibles para este producto
+            // FEFO: consumir/devolver de lotes si existen
             if ($tipo === TipoMovimiento::SALIDA) {
                 $lotesDisponibles = Lote::where('producto_id', $productoId)
                     ->where('establecimiento_id', $establecimientoId)

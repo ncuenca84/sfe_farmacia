@@ -26,35 +26,13 @@
                     <input type="text" name="nombre" value="{{ old('nombre') }}" class="w-full border-gray-300 rounded-md shadow-sm text-sm" required>
                     @error('nombre') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
-                    <select name="categoria_producto_id" class="w-full border-gray-300 rounded-md shadow-sm text-sm">
-                        <option value="">Sin categoria</option>
-                        @foreach($categorias as $cat)
-                            <option value="{{ $cat->id }}" {{ old('categoria_producto_id') == $cat->id ? 'selected' : '' }}>{{ $cat->nombre }}</option>
-                        @endforeach
-                    </select>
-                    @error('categoria_producto_id') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Proveedor</label>
-                    <select name="proveedor_id" class="w-full border-gray-300 rounded-md shadow-sm text-sm">
-                        <option value="">Sin proveedor</option>
-                        @foreach($proveedores as $prov)
-                            <option value="{{ $prov->id }}" {{ old('proveedor_id') == $prov->id ? 'selected' : '' }}>{{ $prov->nombre }}</option>
-                        @endforeach
-                    </select>
-                    @error('proveedor_id') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
                 <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Principio Activo</label>
                     <input type="text" name="principio_activo" value="{{ old('principio_activo') }}" class="w-full border-gray-300 rounded-md shadow-sm text-sm" placeholder="Ej: Paracetamol, Amoxicilina...">
-                    @error('principio_activo') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Concentracion</label>
-                    <input type="text" name="concentracion" value="{{ old('concentracion') }}" class="w-full border-gray-300 rounded-md shadow-sm text-sm" placeholder="Ej: 500mg, 5ml, 10mg/ml...">
-                    @error('concentracion') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    <input type="text" name="concentracion" value="{{ old('concentracion') }}" class="w-full border-gray-300 rounded-md shadow-sm text-sm" placeholder="Ej: 500mg, 5ml...">
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Presentacion</label>
@@ -64,7 +42,6 @@
                             <option value="{{ $pres->id }}" {{ old('presentacion_id') == $pres->id ? 'selected' : '' }}>{{ $pres->nombre }}</option>
                         @endforeach
                     </select>
-                    @error('presentacion_id') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Laboratorio</label>
@@ -74,7 +51,24 @@
                             <option value="{{ $lab->id }}" {{ old('laboratorio_id') == $lab->id ? 'selected' : '' }}>{{ $lab->nombre }}</option>
                         @endforeach
                     </select>
-                    @error('laboratorio_id') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
+                    <select name="categoria_producto_id" class="w-full border-gray-300 rounded-md shadow-sm text-sm">
+                        <option value="">Sin categoria</option>
+                        @foreach($categorias as $cat)
+                            <option value="{{ $cat->id }}" {{ old('categoria_producto_id') == $cat->id ? 'selected' : '' }}>{{ $cat->nombre }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Proveedor</label>
+                    <select name="proveedor_id" class="w-full border-gray-300 rounded-md shadow-sm text-sm">
+                        <option value="">Sin proveedor</option>
+                        @foreach($proveedores as $prov)
+                            <option value="{{ $prov->id }}" {{ old('proveedor_id') == $prov->id ? 'selected' : '' }}>{{ $prov->nombre }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Venta</label>
@@ -83,22 +77,18 @@
                         <option value="requiere_receta" {{ old('tipo_venta') === 'requiere_receta' ? 'selected' : '' }}>Requiere Receta</option>
                         <option value="controlado" {{ old('tipo_venta') === 'controlado' ? 'selected' : '' }}>Controlado</option>
                     </select>
-                    @error('tipo_venta') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Registro Sanitario</label>
                     <input type="text" name="registro_sanitario" value="{{ old('registro_sanitario') }}" class="w-full border-gray-300 rounded-md shadow-sm text-sm">
-                    @error('registro_sanitario') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Numero de Lote</label>
                     <input type="text" name="numero_lote" value="{{ old('numero_lote') }}" class="w-full border-gray-300 rounded-md shadow-sm text-sm">
-                    @error('numero_lote') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Fecha de Vencimiento</label>
                     <input type="date" name="fecha_vencimiento" value="{{ old('fecha_vencimiento') }}" class="w-full border-gray-300 rounded-md shadow-sm text-sm">
-                    @error('fecha_vencimiento') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Precio Unitario</label>
@@ -126,7 +116,6 @@
                 <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Imagen del Producto</label>
                     <input type="file" name="imagen" accept="image/*" class="w-full border-gray-300 rounded-md shadow-sm text-sm">
-                    @error('imagen') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
             </div>
 

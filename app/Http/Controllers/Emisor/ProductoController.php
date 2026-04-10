@@ -81,7 +81,6 @@ class ProductoController extends Controller
         if ($request->hasFile('imagen')) {
             $validated['imagen'] = $request->file('imagen')->store('productos', 'public');
         }
-        unset($validated['imagen_file']);
 
         $validated['emisor_id'] = $user->emisor_id;
 
@@ -189,7 +188,7 @@ class ProductoController extends Controller
             $validated['imagen'] = $request->file('imagen')->store('productos', 'public');
         }
 
-        $producto->update(collect($validated)->except(['stock_actual', 'stock_minimo', 'imagen_file'])->toArray());
+        $producto->update(collect($validated)->except(['stock_actual', 'stock_minimo'])->toArray());
 
         if ($request->has('stock_actual') || $request->has('stock_minimo')) {
             $stockActual = $request->stock_actual ?? [];
@@ -240,7 +239,7 @@ class ProductoController extends Controller
             });
         }
 
-        $productos = $query->paginate($perPage, ['id', 'codigo_principal', 'nombre', 'precio_unitario', 'impuesto_iva_id']);
+        $productos = $query->paginate($perPage, ['id', 'codigo_principal', 'nombre', 'principio_activo', 'precio_unitario', 'impuesto_iva_id']);
 
         return response()->json($productos);
     }
