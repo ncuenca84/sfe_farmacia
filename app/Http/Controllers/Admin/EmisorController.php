@@ -26,9 +26,19 @@ class EmisorController extends Controller
         private SriRucService $sriRucService
     ) {}
 
-    public function index(): View
+    public function index(Request $request): View
     {
-        $emisores = Emisor::with('suscripcionActiva.plan')->paginate(50);
+        $query = Emisor::with('suscripcionActiva.plan');
+
+        if ($request->filled('buscar')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('ruc', 'like', "%{$request->buscar}%")
+                    ->orWhere('razon_social', 'like', "%{$request->buscar}%")
+                    ->orWhere('nombre_comercial', 'like', "%{$request->buscar}%");
+            });
+        }
+
+        $emisores = $query->orderBy('razon_social')->paginate(50);
         return view('admin.emisores.index', compact('emisores'));
     }
 

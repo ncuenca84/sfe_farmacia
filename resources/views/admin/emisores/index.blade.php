@@ -6,6 +6,18 @@
         </div>
     </x-slot>
 
+    <div class="bg-white shadow rounded-lg p-6 mb-6">
+        <form method="GET" action="{{ route('admin.emisores.index') }}" class="flex gap-4">
+            <div class="flex-1">
+                <input type="text" name="buscar" value="{{ request('buscar') }}" placeholder="Buscar por RUC, razon social o nombre comercial..." class="w-full border-gray-300 rounded-md shadow-sm text-sm">
+            </div>
+            <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700 text-sm">Buscar</button>
+            @if(request('buscar'))
+                <a href="{{ route('admin.emisores.index') }}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 text-sm">Limpiar</a>
+            @endif
+        </form>
+    </div>
+
     <div class="bg-white shadow rounded-lg overflow-hidden">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
@@ -23,7 +35,7 @@
                     @forelse($emisores as $emisor)
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $emisor->ruc }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $emisor->razon_social }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-900 max-w-xs">{{ $emisor->razon_social }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $emisor->suscripcionActiva?->plan?->nombre ?? 'Sin plan' }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                 @if($emisor->suscripcionActiva)
@@ -80,7 +92,7 @@
             </table>
         </div>
         <div class="px-6 py-4 border-t border-gray-200">
-            {{ $emisores->links() }}
+            {{ $emisores->withQueryString()->links() }}
         </div>
     </div>
 
