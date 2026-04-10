@@ -215,6 +215,11 @@ Route::middleware(['auth', 'emisor.activo', 'role:ROLE_ADMIN,ROLE_EMISOR_ADMIN,R
             Route::resource('presentaciones', Emisor\PresentacionController::class)->parameters(['presentaciones' => 'presentacion'])->except(['show']);
             Route::resource('laboratorios', Emisor\LaboratorioController::class)->parameters(['laboratorios' => 'laboratorio'])->except(['show']);
 
+            // Punto de Venta (POS)
+            Route::get('/pos', [Emisor\PosController::class, 'index'])->name('pos');
+            Route::get('/pos/buscar-producto', [Emisor\PosController::class, 'buscarProducto'])->name('pos.buscar-producto');
+            Route::post('/pos/facturar', [Emisor\PosController::class, 'facturar'])->name('pos.facturar');
+
             // Lotes (multi-lote FEFO)
             Route::get('/lotes', [Emisor\LoteController::class, 'index'])->name('lotes.index');
             Route::get('/lotes/ingreso', [Emisor\LoteController::class, 'ingreso'])->name('lotes.ingreso');
