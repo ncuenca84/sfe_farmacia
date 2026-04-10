@@ -194,9 +194,17 @@
                     <svg class="w-5 h-5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
                     Lotes (FEFO)
                 </a>
+                <a href="{{ route('emisor.farmacia.compras.index') }}" class="sidebar-link flex items-center px-3 py-2 rounded-lg text-sm {{ request()->routeIs('emisor.farmacia.compras.*') ? 'active text-white font-medium' : 'text-slate-300 hover:text-white hover:bg-white/5' }}">
+                    <svg class="w-5 h-5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                    Compras
+                </a>
                 <a href="{{ route('emisor.farmacia.vencidos') }}" class="sidebar-link flex items-center px-3 py-2 rounded-lg text-sm {{ request()->routeIs('emisor.farmacia.vencidos') ? 'active text-white font-medium' : 'text-slate-300 hover:text-white hover:bg-white/5' }}">
                     <svg class="w-5 h-5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     Vencimientos
+                </a>
+                <a href="{{ route('emisor.farmacia.reportes.rotacion') }}" class="sidebar-link flex items-center px-3 py-2 rounded-lg text-sm {{ request()->routeIs('emisor.farmacia.reportes.*') ? 'active text-white font-medium' : 'text-slate-300 hover:text-white hover:bg-white/5' }}">
+                    <svg class="w-5 h-5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    Reportes
                 </a>
 
                 @if(Auth::user()->emisor && Auth::user()->establecimientosActivos()->contains('maneja_inventario', true))

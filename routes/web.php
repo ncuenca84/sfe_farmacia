@@ -227,6 +227,19 @@ Route::middleware(['auth', 'emisor.activo', 'role:ROLE_ADMIN,ROLE_EMISOR_ADMIN,R
             Route::get('/lotes/{lote}/kardex', [Emisor\LoteController::class, 'kardex'])->name('lotes.kardex');
             Route::get('/lotes/{lote}/ajuste', [Emisor\LoteController::class, 'ajuste'])->name('lotes.ajuste');
             Route::post('/lotes/{lote}/ajuste', [Emisor\LoteController::class, 'guardarAjuste'])->name('lotes.guardar-ajuste');
+
+            // Ordenes de Compra
+            Route::get('/compras', [Emisor\OrdenCompraController::class, 'index'])->name('compras.index');
+            Route::get('/compras/crear', [Emisor\OrdenCompraController::class, 'create'])->name('compras.create');
+            Route::post('/compras', [Emisor\OrdenCompraController::class, 'store'])->name('compras.store');
+            Route::get('/compras/reposicion', [Emisor\OrdenCompraController::class, 'reposicion'])->name('compras.reposicion');
+            Route::get('/compras/{compra}', [Emisor\OrdenCompraController::class, 'show'])->name('compras.show');
+            Route::post('/compras/{compra}/recibir', [Emisor\OrdenCompraController::class, 'recibir'])->name('compras.recibir');
+
+            // Reportes Farmacia
+            Route::get('/reportes/rotacion', [Emisor\ReporteFarmaciaController::class, 'rotacion'])->name('reportes.rotacion');
+            Route::get('/reportes/rentabilidad', [Emisor\ReporteFarmaciaController::class, 'rentabilidad'])->name('reportes.rentabilidad');
+            Route::get('/reportes/vencidos-proveedor', [Emisor\ReporteFarmaciaController::class, 'vencidosProveedor'])->name('reportes.vencidos-proveedor');
         });
 
         // Inventario
