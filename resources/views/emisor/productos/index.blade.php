@@ -9,7 +9,7 @@
     <div class="bg-white rounded-lg shadow p-6 mb-6">
         <form method="GET" action="{{ route('emisor.configuracion.productos.index') }}" class="flex gap-4">
             <div class="flex-1">
-                <input type="text" name="buscar" value="{{ request('buscar') }}" placeholder="Buscar por codigo o descripcion..." class="w-full border-gray-300 rounded-md shadow-sm text-sm">
+                <input type="text" name="buscar" value="{{ request('buscar') }}" placeholder="Buscar por codigo, nombre o principio activo..." class="w-full border-gray-300 rounded-md shadow-sm text-sm">
             </div>
             <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700 text-sm">Buscar</button>
         </form>
@@ -31,7 +31,17 @@
                 @forelse($productos as $producto)
                 <tr class="{{ $producto->estaVencido() ? 'bg-red-50' : ($producto->proximoAVencer() ? 'bg-yellow-50' : '') }}">
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $producto->codigo_principal ?? '-' }}</td>
-                    <td class="px-6 py-4 text-sm text-gray-900">{{ $producto->nombre }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">
+                        {{ $producto->nombre }}
+                        @if($producto->principio_activo)
+                            <p class="text-xs text-gray-400">{{ $producto->principio_activo }} {{ $producto->concentracion ? '- '.$producto->concentracion : '' }}</p>
+                        @endif
+                        @if($producto->tipo_venta === 'requiere_receta')
+                            <span class="inline-flex px-1.5 py-0.5 text-[10px] font-medium rounded bg-yellow-100 text-yellow-700">Receta</span>
+                        @elseif($producto->tipo_venta === 'controlado')
+                            <span class="inline-flex px-1.5 py-0.5 text-[10px] font-medium rounded bg-red-100 text-red-700">Controlado</span>
+                        @endif
+                    </td>
                     <td class="px-6 py-4 text-sm text-gray-500">{{ $producto->categoriaProducto->nombre ?? '-' }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right">${{ number_format($producto->precio_unitario ?? 0, 2) }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm">

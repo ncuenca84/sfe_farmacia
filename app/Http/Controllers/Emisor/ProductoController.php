@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Emisor;
 use App\Http\Controllers\Controller;
 use App\Models\CategoriaProducto;
 use App\Models\Inventario;
+use App\Models\Laboratorio;
+use App\Models\Presentacion;
 use App\Models\Producto;
 use App\Models\Proveedor;
 use Illuminate\Http\JsonResponse;
@@ -24,11 +26,12 @@ class ProductoController extends Controller
         if ($request->filled('buscar')) {
             $query->where(function ($q) use ($request) {
                 $q->where('nombre', 'like', "%{$request->buscar}%")
-                    ->orWhere('codigo_principal', 'like', "%{$request->buscar}%");
+                    ->orWhere('codigo_principal', 'like', "%{$request->buscar}%")
+                    ->orWhere('principio_activo', 'like', "%{$request->buscar}%");
             });
         }
 
-        $productos = $query->with(['categoriaProducto', 'proveedor'])->orderBy('nombre')->paginate(50);
+        $productos = $query->with(['categoriaProducto', 'proveedor', 'presentacion', 'laboratorio'])->orderBy('nombre')->paginate(50);
 
         return view('emisor.productos.index', compact('productos'));
     }
@@ -39,8 +42,10 @@ class ProductoController extends Controller
         $manejaInventario = $user->establecimientosActivos()->contains('maneja_inventario', true);
         $categorias = CategoriaProducto::where('emisor_id', $user->emisor_id)->where('activo', true)->orderBy('nombre')->get();
         $proveedores = Proveedor::where('emisor_id', $user->emisor_id)->where('activo', true)->orderBy('nombre')->get();
+        $presentaciones = Presentacion::where('emisor_id', $user->emisor_id)->where('activo', true)->orderBy('nombre')->get();
+        $laboratorios = Laboratorio::where('emisor_id', $user->emisor_id)->where('activo', true)->orderBy('nombre')->get();
 
-        return view('emisor.productos.create', compact('manejaInventario', 'categorias', 'proveedores'));
+        return view('emisor.productos.create', compact('manejaInventario', 'categorias', 'proveedores', 'presentaciones', 'laboratorios'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -52,6 +57,12 @@ class ProductoController extends Controller
             'codigo_auxiliar' => 'nullable|string|max:50',
             'nombre' => 'required|string|max:300',
             'descripcion' => 'nullable|string',
+            'principio_activo' => 'nullable|string|max:300',
+            'concentracion' => 'nullable|string|max:100',
+            'presentacion_id' => 'nullable|exists:presentaciones,id',
+            'laboratorio_id' => 'nullable|exists:laboratorios,id',
+            'tipo_venta' => 'nullable|in:venta_libre,requiere_receta,controlado',
+            'registro_sanitario' => 'nullable|string|max:50',
             'categoria_producto_id' => 'nullable|exists:categorias_producto,id',
             'proveedor_id' => 'nullable|exists:proveedores,id',
             'numero_lote' => 'nullable|string|max:100',
@@ -113,6 +124,8 @@ class ProductoController extends Controller
         $user = auth()->user();
         $categorias = CategoriaProducto::where('emisor_id', $user->emisor_id)->where('activo', true)->orderBy('nombre')->get();
         $proveedores = Proveedor::where('emisor_id', $user->emisor_id)->where('activo', true)->orderBy('nombre')->get();
+        $presentaciones = Presentacion::where('emisor_id', $user->emisor_id)->where('activo', true)->orderBy('nombre')->get();
+        $laboratorios = Laboratorio::where('emisor_id', $user->emisor_id)->where('activo', true)->orderBy('nombre')->get();
         $establecimientosInventario = $user->establecimientosActivos()->where('maneja_inventario', true)
             ->filter(fn ($est) => $est->unidad_negocio_id === $producto->unidad_negocio_id);
         $manejaInventario = $establecimientosInventario->isNotEmpty();
@@ -138,7 +151,7 @@ class ProductoController extends Controller
                 ->whereIn('establecimiento_id', $establecimientoIds)->get()
             : collect();
 
-        return view('emisor.productos.edit', compact('producto', 'manejaInventario', 'inventarios', 'categorias', 'proveedores'));
+        return view('emisor.productos.edit', compact('producto', 'manejaInventario', 'inventarios', 'categorias', 'proveedores', 'presentaciones', 'laboratorios'));
     }
 
     public function update(Request $request, Producto $producto): RedirectResponse
@@ -150,6 +163,12 @@ class ProductoController extends Controller
             'codigo_auxiliar' => 'nullable|string|max:50',
             'nombre' => 'required|string|max:300',
             'descripcion' => 'nullable|string',
+            'principio_activo' => 'nullable|string|max:300',
+            'concentracion' => 'nullable|string|max:100',
+            'presentacion_id' => 'nullable|exists:presentaciones,id',
+            'laboratorio_id' => 'nullable|exists:laboratorios,id',
+            'tipo_venta' => 'nullable|in:venta_libre,requiere_receta,controlado',
+            'registro_sanitario' => 'nullable|string|max:50',
             'categoria_producto_id' => 'nullable|exists:categorias_producto,id',
             'proveedor_id' => 'nullable|exists:proveedores,id',
             'numero_lote' => 'nullable|string|max:100',
@@ -216,7 +235,8 @@ class ProductoController extends Controller
         if ($request->filled('q')) {
             $query->where(function ($q) use ($request) {
                 $q->where('nombre', 'like', "%{$request->q}%")
-                    ->orWhere('codigo_principal', 'like', "%{$request->q}%");
+                    ->orWhere('codigo_principal', 'like', "%{$request->q}%")
+                    ->orWhere('principio_activo', 'like', "%{$request->q}%");
             });
         }
 

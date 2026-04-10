@@ -129,6 +129,16 @@ class Emisor extends Model implements Auditable
         return $this->hasMany(Proveedor::class);
     }
 
+    public function presentaciones(): HasMany
+    {
+        return $this->hasMany(Presentacion::class);
+    }
+
+    public function laboratorios(): HasMany
+    {
+        return $this->hasMany(Laboratorio::class);
+    }
+
     public function crmNotas(): HasMany
     {
         return $this->hasMany(CrmNota::class);

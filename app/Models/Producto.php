@@ -11,7 +11,9 @@ class Producto extends Model
     protected $fillable = [
         'emisor_id', 'unidad_negocio_id', 'categoria_producto_id', 'proveedor_id',
         'codigo_principal', 'codigo_auxiliar',
-        'nombre', 'descripcion', 'numero_lote', 'fecha_vencimiento', 'imagen',
+        'nombre', 'descripcion', 'principio_activo', 'concentracion',
+        'presentacion_id', 'laboratorio_id', 'tipo_venta', 'registro_sanitario',
+        'numero_lote', 'fecha_vencimiento', 'imagen',
         'precio_unitario',
         'impuesto_iva_id', 'tiene_ice', 'impuesto_ice_id', 'activo',
     ];
@@ -34,6 +36,26 @@ class Producto extends Model
     public function proveedor(): BelongsTo
     {
         return $this->belongsTo(Proveedor::class);
+    }
+
+    public function presentacion(): BelongsTo
+    {
+        return $this->belongsTo(Presentacion::class);
+    }
+
+    public function laboratorio(): BelongsTo
+    {
+        return $this->belongsTo(Laboratorio::class);
+    }
+
+    public function requiereReceta(): bool
+    {
+        return in_array($this->tipo_venta, ['requiere_receta', 'controlado']);
+    }
+
+    public function esControlado(): bool
+    {
+        return $this->tipo_venta === 'controlado';
     }
 
     public function estaVencido(): bool

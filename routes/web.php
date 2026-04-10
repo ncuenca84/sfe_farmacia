@@ -212,6 +212,8 @@ Route::middleware(['auth', 'emisor.activo', 'role:ROLE_ADMIN,ROLE_EMISOR_ADMIN,R
             Route::get('/vencidos', [Emisor\FarmaciaController::class, 'vencidos'])->name('vencidos');
             Route::resource('categorias', Emisor\CategoriaProductoController::class)->parameters(['categorias' => 'categoria'])->except(['show']);
             Route::resource('proveedores', Emisor\ProveedorController::class)->parameters(['proveedores' => 'proveedor'])->except(['show']);
+            Route::resource('presentaciones', Emisor\PresentacionController::class)->parameters(['presentaciones' => 'presentacion'])->except(['show']);
+            Route::resource('laboratorios', Emisor\LaboratorioController::class)->parameters(['laboratorios' => 'laboratorio'])->except(['show']);
         });
 
         // Inventario

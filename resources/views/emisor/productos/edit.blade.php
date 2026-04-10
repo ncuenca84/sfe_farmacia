@@ -47,6 +47,50 @@
                     </select>
                     @error('proveedor_id') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Principio Activo</label>
+                    <input type="text" name="principio_activo" value="{{ old('principio_activo', $producto->principio_activo) }}" class="w-full border-gray-300 rounded-md shadow-sm text-sm" placeholder="Ej: Paracetamol, Amoxicilina...">
+                    @error('principio_activo') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Concentracion</label>
+                    <input type="text" name="concentracion" value="{{ old('concentracion', $producto->concentracion) }}" class="w-full border-gray-300 rounded-md shadow-sm text-sm" placeholder="Ej: 500mg, 5ml...">
+                    @error('concentracion') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Presentacion</label>
+                    <select name="presentacion_id" class="w-full border-gray-300 rounded-md shadow-sm text-sm">
+                        <option value="">Sin presentacion</option>
+                        @foreach($presentaciones as $pres)
+                            <option value="{{ $pres->id }}" {{ old('presentacion_id', $producto->presentacion_id) == $pres->id ? 'selected' : '' }}>{{ $pres->nombre }}</option>
+                        @endforeach
+                    </select>
+                    @error('presentacion_id') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Laboratorio</label>
+                    <select name="laboratorio_id" class="w-full border-gray-300 rounded-md shadow-sm text-sm">
+                        <option value="">Sin laboratorio</option>
+                        @foreach($laboratorios as $lab)
+                            <option value="{{ $lab->id }}" {{ old('laboratorio_id', $producto->laboratorio_id) == $lab->id ? 'selected' : '' }}>{{ $lab->nombre }}</option>
+                        @endforeach
+                    </select>
+                    @error('laboratorio_id') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Venta</label>
+                    <select name="tipo_venta" class="w-full border-gray-300 rounded-md shadow-sm text-sm">
+                        <option value="venta_libre" {{ old('tipo_venta', $producto->tipo_venta) === 'venta_libre' ? 'selected' : '' }}>Venta Libre</option>
+                        <option value="requiere_receta" {{ old('tipo_venta', $producto->tipo_venta) === 'requiere_receta' ? 'selected' : '' }}>Requiere Receta</option>
+                        <option value="controlado" {{ old('tipo_venta', $producto->tipo_venta) === 'controlado' ? 'selected' : '' }}>Controlado</option>
+                    </select>
+                    @error('tipo_venta') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Registro Sanitario</label>
+                    <input type="text" name="registro_sanitario" value="{{ old('registro_sanitario', $producto->registro_sanitario) }}" class="w-full border-gray-300 rounded-md shadow-sm text-sm">
+                    @error('registro_sanitario') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Numero de Lote</label>
                     <input type="text" name="numero_lote" value="{{ old('numero_lote', $producto->numero_lote) }}" class="w-full border-gray-300 rounded-md shadow-sm text-sm">
